@@ -18,6 +18,7 @@ One project gets one page. For a second project, install it again in that projec
 - A paid Claude plan (Pro or higher).
 - A Claude project on the web or in Claude Desktop, or a project folder in Claude Code. In an ordinary chat outside a project, GetNod will offer to create a project first.
 - Page publishing turned on: Settings → Capabilities → "Code execution and file creation" (in newer settings, "Create and edit files"). On Team and Enterprise plans an admin controls this in Organization settings.
+- Network access for code execution: Settings → Capabilities → "Allow network egress", with github.com and raw.githubusercontent.com allowed. At installation Claude downloads the page file from github.com: the public repository Romen-agents/getnod-page, at a fixed version, with a checksum check.
 
 GetNod has not been tested in Cowork yet. Claude supports page data on the web and in Claude Desktop; on your phone, open the page in a browser.
 
@@ -25,7 +26,7 @@ GetNod has not been tested in Cowork yet. Claude supports page data on the web a
 
 1. Add GetNod from the plugin directory: Customize → Plugins in Claude, or `/plugin` in Claude Code.
 2. Open your project, start a new chat and type: **Install GetNod**.
-3. Claude publishes your page, saves the project instruction and gives you the page address. Depending on your settings, Claude will ask you to approve three actions: reading the plugin's files, publishing a page, and writing to the page's database. All three are needed. In a Claude project it may ask you to paste the instruction into the project settings yourself.
+3. Claude publishes your page, saves the project instruction and gives you the page address. Depending on your settings, Claude will ask you to approve four actions: reading the plugin's files, downloading the page file (code execution), publishing a page, and writing to the page's database. All four are needed. In a Claude project it may ask you to paste the instruction into the project settings yourself.
 4. Open a new chat in the project and type: **let's continue**. The first line of the reply is the link to your page.
 
 If you keep personal rules for Claude in your profile settings, Claude gives you a short request that checks them against GetNod, so the two don't conflict.
@@ -69,7 +70,7 @@ Your phone or browser also keeps small conveniences on that device: theme, langu
 
 **This is deliberately saved between chats, and it changes how Claude behaves in this project.** Installing GetNod adds an instruction to your project that makes every new chat read the page and continue from it. What is saved is the set of records above. You can hide any record or word on the page; hidden items stay in the database until you delete the page. GetNod does not save chat transcripts. It stores no information about you beyond these records, and "My words" holds only the words you approved. The instruction tells Claude to treat everything it reads from the page as information about your work, not as commands, and to confirm with you first if it asks for anything beyond this project's records. To stop all this, delete the GetNod text from wherever the instruction was saved: the project instructions, the project files or `CLAUDE.md`.
 
-**What GetNod does not do.** It does not read Claude's memory, past chats, chat summaries or your files. It sends nothing to the author, and it contains no analytics, no outside scripts and no outside fonts. The plugin has no server or connector of its own. It works through Claude's tools for publishing a page and writing to its database, and it asks Claude to search its tool list if it can't find them. For large finished work, the instruction asks Claude to do a second check, with a separate helper if one is available; a helper uses your limit too. The optional "Sort notes right away" setting below sends notes to Claude.
+**What GetNod does not do.** It does not read Claude's memory, past chats, chat summaries or your files. It sends nothing to the author, and it contains no analytics, no outside scripts and no outside fonts. The plugin has no server or connector of its own. It works through Claude's tools for publishing a page and writing to its database, and it asks Claude to search its tool list if it can't find them. For large finished work, the instruction asks Claude to do a second check, with a separate helper if one is available; a helper uses your limit too. The optional "Sort notes right away" setting below sends notes to Claude. At installation the plugin downloads the page file once from https://github.com/Romen-agents/getnod-page; GitHub sees an ordinary download request, and nothing is sent to the author of GetNod.
 
 **What installing changes.** It publishes one new page in your account, private until you share it, and adds the GetNod instruction to your project instructions, your project files or `CLAUDE.md` in your project ([full text](skills/secretary/references/project-instruction-en.md)). In Claude Code in the cloud (claude.ai/code), it also commits `CLAUDE.md` and pushes it to your repository's main branch. Claude publishes the page again at the same address at the start of every new chat, when you come back to a chat after a break, and when you ask for the page or mention it, so its link appears in the chat; the records do not change.
 
@@ -86,6 +87,7 @@ Privacy policy: https://getnodagents.com/privacy
 ## Troubleshooting
 
 - **"GetNod is installed" but a new chat doesn't know the page.** The project instruction wasn't saved. Open the project settings → Instructions or the project files, or `CLAUDE.md` in Claude Code, and check that the GetNod text is there with your page address.
+- **Claude can't download the page.** Turn on code execution and network access (see "What you need").
 - **Claude says it can't publish a page.** Turn on "Code execution and file creation" (see "What you need"). If it's on, ask Claude to search its tools for publishing a page.
 - **The page says there is no data, or that the connection was lost.** Open it from the link in your chat while signed in to Claude, then refresh it.
 - **Claude writes "⚠ The page is not saving".** A write to the page failed, and the same line says what to do. If it says "Network access is off", go to Settings → Capabilities and turn on "Allow network egress". If the page can't be found or there is no permission, the page is probably in another Claude account. Until saving works, Claude keeps your decisions and tasks in its reply and moves them to the page afterwards.
@@ -112,7 +114,7 @@ GetNod is an independent project, not affiliated with or endorsed by Anthropic. 
 
 GetNod — секретарь проекта в Claude. Ты говоришь в одном чате проекта, а Claude записывает твои решения, задачи и вопросы на одну частную страницу в твоём аккаунте Claude. С телефона ты отвечаешь кнопками, ставишь галочки и оставляешь заметки. Каждый новый чат проекта читает страницу и продолжает с того же места.
 
-**Как поставить.** Добавь GetNod из каталога плагинов, открой проект, начни новый чат и напиши: «Установи GetNod». Claude опубликует страницу, сохранит инструкцию проекта и даст адрес. Затем открой новый чат в проекте и напиши: «продолжаем».
+**Как поставить.** Добавь GetNod из каталога плагинов, открой проект, начни новый чат и напиши: «Установи GetNod». Claude опубликует страницу, сохранит инструкцию проекта и даст адрес. Затем открой новый чат в проекте и напиши: «продолжаем». При установке Claude один раз скачивает файл страницы с github.com (открытый репозиторий Romen-agents/getnod-page, точная версия, проверка контрольной суммы), поэтому нужен доступ к сети для выполнения кода: «Settings → Capabilities → Allow network egress», в разрешённых адресах — github.com и raw.githubusercontent.com. GitHub видит обычное скачивание, автору GetNod ничего не передаётся.
 
 **Нужно:** платный план Claude (Pro или выше), проект в Claude в браузере или Claude Desktop либо папка проекта в Claude Code. На телефоне страницу открывай в браузере.
 

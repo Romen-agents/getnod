@@ -1,7 +1,7 @@
 {
   "name": "getnod",
   "displayName": "GetNod",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Project secretary: keeps a private page of a project's decisions, tasks and open questions in your own Claude account. You answer from your phone; new chats in the project read the page and continue. Say \"Install GetNod\" in a project.",
   "author": {
     "name": "Romen Kazarian",

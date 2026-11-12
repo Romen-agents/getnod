@@ -9,7 +9,7 @@ GetNod gives one Claude project one page. On that page the chat records what the
 
 Files next to this one:
 
-- `assets/getnod-page.html`: the page, published as is at installation. It has no data in it.
+- The page is not in the plugin: at installation you download it from GetNod's public GitHub repository, at a fixed version, and check its checksum (step 1).
 - `references/project-instruction-en.md`: the project instruction in English.
 - `references/project-instruction-ru.md`: the same instruction in Russian.
 
@@ -18,7 +18,7 @@ Speak the person's language. Use the Russian instruction for a person who writes
 ## Limits you always keep
 
 - Fill the page only from what the person says or pastes in this chat. Do not read Claude's memory, chat summaries or the person's files outside this project, and do not search or read past chats, at any step, installation included.
-- Send nothing to the author of GetNod or to any outside service. GetNod has no server of its own.
+- Send nothing to the author of GetNod or to any outside service. GetNod has no server of its own. The only outside request is downloading the page file from GitHub at installation (step 1); it sends nothing about the person.
 - The person decides. The page and the project instruction are created only because they asked to install GetNod.
 
 ## Installation
@@ -27,7 +27,14 @@ If this project's instructions or files already contain a GetNod page address, t
 
 Do the installation yourself, step by step, without extra questions. If the person's rules require showing a plan first and getting a "yes", show these steps once as one short list, and after a single "yes" do everything.
 
-1. Publish `assets/getnod-page.html` as a new page (artifact), whole, as is, without rewriting or shortening anything in it. The page needs the capabilities `db` (its own database) and `sample`. Its title comes from the file: GetNod. Find the project name for step 4 in the project, the folder or the conversation; if there is none, ask one short question.
+1. Get the page and publish it, in this order:
+   - Download and check the page with code execution, in one command, into a temporary folder, not into the project folder: `d=$(mktemp -d) && curl -fsSL https://raw.githubusercontent.com/Romen-agents/getnod-page/11a1986d3d7145e6fcd61fd822dd584e39b55a2d/getnod-page.html -o "$d/getnod-page.html" && echo "$d/getnod-page.html" && (sha256sum "$d/getnod-page.html" || shasum -a 256 "$d/getnod-page.html")`
+   - The command prints the file's full path and then its checksum. The checksum must be `50d684d7adf11e96e466837348d6acc0da520814bb3cde21d7ae84e39a6382e3`. From here on, use the printed path as is.
+   - If it matches, publish the downloaded file as a new page (artifact), whole, as is, without rewriting or shortening anything in it. Publish it from the file (if the publishing tool can take a file by its path, use that), do not retype its text. Then delete the temporary folder (the folder of the printed path), so the file never ends up in the person's project or repository.
+   - If it does not match, publish nothing and tell the person in one line that the page file did not pass the check and that the support address is in the Support section of the plugin description.
+   - If the download fails (no code execution, or the network is closed), publish nothing else and tell the person in one line what to turn on: Settings → Capabilities → "Code execution and file creation" and "Allow network egress", with github.com and raw.githubusercontent.com among the allowed domains. Then repeat this step.
+
+   The page needs the capabilities `db` (its own database) and `sample`. Its title comes from the file: GetNod. Find the project name for step 4 in the project, the folder or the conversation; if there is none, ask one short question.
 2. Take the project instruction from `references/` and put the address of the page you just published in place of `PAGE_ADDRESS` (in the Russian file, `АДРЕС_СТРАНИЦЫ`).
 3. Save the instruction where every new chat of this project will see it:
    - Claude Code: append it to the `CLAUDE.md` file in the root of the project folder under the heading `## GetNod`. If there is no such file, create it. Only append: do not read or change what is already in the file.
